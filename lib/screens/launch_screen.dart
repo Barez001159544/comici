@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:superhero/constants.dart';
+import 'package:superhero/screens/home_screen.dart';
 
 class LaunchScreen extends StatefulWidget {
   const LaunchScreen({super.key});
@@ -67,28 +69,37 @@ class _LaunchScreenState extends State<LaunchScreen> {
                                   onTap: (){
                                     print("END");
                                   },
-                                  child: Container(
-                                    height:82,
-                                    width:343,
-                                    margin: EdgeInsets.all(20),
-                                    decoration: BoxDecoration(
-                                      color:Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(7),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black,
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: Offset(5, 5),
+                                  child: GestureDetector(
+                                        onTap: ()async{
+                                      var prefs = await SharedPreferences.getInstance();
+                                      prefs.setBool("notFirstTime", true);
+                                      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context){
+                                        return HomeScreen();
+                                      }));
+                                    },
+                                    child: Container(
+                                      height:82,
+                                      width:343,
+                                      margin: EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        color:Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(7),
                                         ),
-                                      ],
-                                      border: Border.all(
-                                        width: 1, color: Colors.black, style: BorderStyle.solid,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black,
+                                            spreadRadius: 1,
+                                            blurRadius: 3,
+                                            offset: Offset(5, 5),
+                                          ),
+                                        ],
+                                        border: Border.all(
+                                          width: 1, color: Colors.black, style: BorderStyle.solid,
+                                        ),
                                       ),
+                                      child: Center(child: Text("Continue", style: TextStyle(color: Colors.black, fontFamily: "Comic", fontSize: 20),)),
                                     ),
-                                    child: Center(child: Text("Continue", style: TextStyle(color: Colors.black, fontFamily: "Comic", fontSize: 20),)),
                                   ),
                                 ),
                               ),

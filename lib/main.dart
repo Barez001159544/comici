@@ -40,6 +40,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // Future<Widget> nextScreen() async {
+  //   var prefs= await SharedPreferences.getInstance();
+  //   bool? notFirstTime= await prefs.getBool("notFirstTime");
+  //   print("---------${notFirstTime}");
+  //   return Future.value(notFirstTime==false?LaunchScreen():HomeScreen());
+  // }
   var ran;
   @override
   void initState() {
@@ -47,6 +53,7 @@ class _MyAppState extends State<MyApp> {
     ran= Random().nextInt(8);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<TwoDiffTheme>(context, listen: false).getDefaultTheme();
+      Provider.of<HeroByIdController>(context, listen: false).getHeroes();
     });
   }
   @override
@@ -61,46 +68,51 @@ class _MyAppState extends State<MyApp> {
     double hei = MediaQuery.of(context).size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FlutterSplashScreen(
-        defaultNextScreen: HomeScreen(),
-        splashScreenBody: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("images/${factBackground[ran]}"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 50,
-              child: Container(
-                height: 200,
-                width: wid,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/pngtree-torn-paper-yellow-and-black-abstract-image_764054.png"),
-                    fit: BoxFit.fill,
+      home: Consumer<HeroByIdController>(
+        builder: (context, heroByIdController, child){
+          print(Future.value(HomeScreen));
+          return FlutterSplashScreen(
+            defaultNextScreen: LaunchScreen(),
+            duration: Duration(seconds: 5),
+            splashScreenBody: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("images/${factBackground[ran]}"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                child: Center(
+                Positioned(
+                  bottom: 50,
                   child: Container(
-                      width: wid-80,
-                      height: 120,
-                      child: Center(child: Text(textAlign: TextAlign.center,"${facts[ran]}", style: TextStyle(color: Colors.white, fontFamily: "Comic"),))),
+                    height: 200,
+                    width: wid,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/pngtree-torn-paper-yellow-and-black-abstract-image_764054.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    child: Center(
+                      child: Container(
+                          width: wid-80,
+                          height: 120,
+                          child: Center(child: Text(textAlign: TextAlign.center,"${facts[ran]}", style: TextStyle(color: Colors.white, fontFamily: "Comic"),))),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 20,
+                  child: Container(
+                      width: wid,
+                      child: Center(child: Text("Loading...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
+                ),
+              ],
             ),
-            Positioned(
-              bottom: 20,
-              child: Container(
-                  width: wid,
-                  child: Center(child: Text("Loading...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
-            ),
-          ],
-        ),
-        duration: Duration(seconds: 5),
+          );
+        },
       ),
       // Container(
       //   decoration: BoxDecoration(

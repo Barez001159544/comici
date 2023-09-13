@@ -13,8 +13,8 @@ class HeroByIdController extends ChangeNotifier{
   void getHeroes()async{
     isLoading=true;
     notifyListeners();
-
-    for(int i=0; i<1; i++){
+    _returnedHero=[];
+    for(int i=0; i<10; i++){
       var response= await service.getById("${Random().nextInt(731)}");
       _returnedHero.add(response!);
     }
@@ -23,17 +23,20 @@ class HeroByIdController extends ChangeNotifier{
     notifyListeners();
   }
 
+  bool isFavLoading=false;
   List<dynamic> _favHeroes=[];
   List<dynamic> get favHeroes=> _favHeroes;
+  List<String> _favHeroesIds=[];
+  List<String> get favHeroesIds=> _favHeroesIds;
   void getHeroesById()async{
-    isLoading=true;
+    isFavLoading=true;
     notifyListeners();
 
     List<dynamic> ids=[];
     var prefs= await SharedPreferences.getInstance();
     // print(prefs.getKeys());
     for(int i=0; i<prefs.getKeys().length; i++){
-      if(prefs.getKeys().elementAt(i)=="isDark"){
+      if(prefs.getKeys().elementAt(i)=="isDark" || prefs.getKeys().elementAt(i)=="notFirstTime"){
         // Skip!
       }else{
         ids.add(prefs.getString(prefs.getKeys().elementAt(i)));
@@ -43,9 +46,12 @@ class HeroByIdController extends ChangeNotifier{
     for(int i=0; i<ids.length; i++){
       // var response= await service.getById("${ids[i]}");
         var response= await service.getById("${ids[i]}");
+        _favHeroesIds.add(ids[i]);
         _favHeroes.add(response!);
     }
-    isLoading=false;
+    print(_favHeroesIds);
+    print(_favHeroes);
+    isFavLoading=false;
     notifyListeners();
   }
 }

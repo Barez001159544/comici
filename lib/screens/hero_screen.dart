@@ -106,6 +106,7 @@ class _HeroScreenState extends State<HeroScreen> {
                       }
                       setState(() {
                         prefs.containsKey("${singleHero.singleHeroo.name}")?prefs?.remove("${singleHero.singleHeroo.name}"):saveFavHeroes("${singleHero.singleHeroo.id}");
+                        heroByIdController.favHeroesIds.contains(singleHero.singleHeroo.id)?heroByIdController.favHeroesIds.remove(singleHero.singleHeroo.id):heroByIdController.favHeroesIds.add(singleHero.singleHeroo.id);
                         heroByIdController.favHeroes.contains(singleHero.singleHeroo)?heroByIdController.favHeroes.remove(singleHero.singleHeroo):heroByIdController.favHeroes.add(singleHero.singleHeroo);
                         // isItFav=prefs.containsKey("${singleHero.singleHeroo.name}")?true:false;
                       });
@@ -123,7 +124,7 @@ class _HeroScreenState extends State<HeroScreen> {
                     color: Colors.transparent,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Center(
-                      child: Icon(heroByIdController.favHeroes.contains(singleHero.singleHeroo)?Icons.favorite_rounded:Icons.favorite_border_rounded, color:heroByIdController.favHeroes.contains(singleHero.singleHeroo)?Colors.red:(twoDiffTheme.isDark?Colors.white:Colors.black), size: 25,),
+                      child: Icon(heroByIdController.favHeroesIds.contains(singleHero.singleHeroo.id)?Icons.favorite_rounded:Icons.favorite_border_rounded, color:heroByIdController.favHeroesIds.contains(singleHero.singleHeroo.id)?Colors.red:(twoDiffTheme.isDark?Colors.white:Colors.black), size: 25,),
                     ),
                   ),
                 ),

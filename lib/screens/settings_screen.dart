@@ -54,6 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             var prefs= await SharedPreferences.getInstance();
                             prefs.clear();
                             heroByIdController.favHeroes.clear();
+                            heroByIdController.favHeroesIds.clear();
                           }else{
                             Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context){
                               return AboutScreen();

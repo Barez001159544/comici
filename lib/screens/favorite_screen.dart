@@ -20,10 +20,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // Provider.of<HeroByIdController>(context, listen: false).returnedHero.isEmpty?Provider.of<HeroByIdController>(context, listen: false).getHeroes():print("Already Full");
-      Provider.of<HeroByIdController>(context, listen: false).favHeroes.isEmpty?Provider.of<HeroByIdController>(context, listen: false).getHeroesById():print("Already full of Favs");
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   // Provider.of<HeroByIdController>(context, listen: false).returnedHero.isEmpty?Provider.of<HeroByIdController>(context, listen: false).getHeroes():print("Already Full");
+    //   Provider.of<HeroByIdController>(context, listen: false).favHeroes.isEmpty?Provider.of<HeroByIdController>(context, listen: false).getHeroesById():print("Already full of Favs");
+    // });
   }
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               scrolledUnderElevation: 0,
               backgroundColor: Colors.transparent,
               title: Center(
-                child: Text("Find Your Superhero", style: TextStyle(fontFamily: "Comic", fontSize: 15, color:twoDiffTheme.isDark?Colors.white:Colors.black),),),
+                child: Text("Your Favorite Superheroes", style: TextStyle(fontFamily: "Comic", fontSize: 15, color:twoDiffTheme.isDark?Colors.white:Colors.black),),),
             ),
             body: SafeArea(
-              child: (heroByIdController.isLoading)?Container(
+              child: (heroByIdController.isFavLoading)?Container(
                 width: double.maxFinite,
                 height: 180,
                 child: Center(
