@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:superhero/controllers/theme.dart';
 import 'package:superhero/screens/hero_screen.dart';
 import 'package:superhero/screens/home_screen.dart';
 import 'package:superhero/screens/launch_screen.dart';
+import 'package:typewritertext/typewritertext.dart';
 
 import 'controllers/connection_availability.dart';
 
@@ -60,7 +62,6 @@ class _MyAppState extends State<MyApp> {
       Provider.of<TwoDiffTheme>(context, listen: false).getDefaultTheme();
       Provider.of<HeroByIdController>(context, listen: false).getHeroes();
       Provider.of<InternetAvailability>(context, listen: false).checkInternet();
-      print("(((((((${Provider.of<InternetAvailability>(context, listen: false).isLoading}");
     });
   }
   @override
@@ -77,6 +78,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Consumer2<HeroByIdController, InternetAvailability>(
         builder: (context, heroByIdController, internetAvailability, child){
+          heroByIdController.getHeroes();
           return internetAvailability.isLoading?Scaffold(
             body: Center(child: CircularProgressIndicator()),
           ):FlutterSplashScreen(
@@ -115,12 +117,22 @@ class _MyAppState extends State<MyApp> {
                   bottom: 20,
                   child: Container(
                       width: wid,
-                      child: Center(child: Text("Loading...", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
+                      child: Center(child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Loading", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          TypeWriterText(
+                              text: Text("....", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            duration: Duration(milliseconds: 500),
+                            repeat: true,
+                          ),
+                        ],
+                      ))),
                 ),
                 internetAvailability.availability?Container():Center(
                   child: Container(
                     width: 200,
-                    height: 120,
+                    height: 150,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(
@@ -130,7 +142,16 @@ class _MyAppState extends State<MyApp> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(child: Center(child: Text("Not Internet Connection!", style: TextStyle(color: Colors.grey.shade700),))),
+                        Expanded(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.wifi_off_rounded, color: Colors.lightBlue, size: 40,),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("No Internet Connection!", style: TextStyle(color: Colors.grey.shade700),),
+                          ],
+                        )),
                         Row(
                           children: [
                             Expanded(
